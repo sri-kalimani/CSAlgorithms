@@ -29,12 +29,10 @@ int main(void){
 // Test arrays
   int arr1[] = {3, 2, 6, 9, 1, 4, 5, 8, 7, 0};
   int arr2[] = {3, 2, 1};
-  int arr3[] = { 1, 20, 6, 4, 5 };
 
 // Test output
   cout<<countInversion(arr1, 10)<<endl;
   cout<<countInversion(arr2, 3)<<endl;
-  cout<<countInversion(arr3, 5)<<endl;
 
   return 0;
 }
