@@ -6,12 +6,6 @@
 using namespace std;
 
 
-/*
-* countInversion: checkes if elements after current element are
-* greater and adds count
-
-* returns count of inversions
-*/
 int mergeSort(int arr[], int temp[], int left, int right);
 int mergeInv(int arr[], int temp[], int left, int mid, int right);
 
@@ -20,6 +14,7 @@ int mergeInv(int arr[], int temp[], int left, int mid, int right);
 * return inv_count
 * Sorts the input array and returns the
 * number of inversions in the array
+* This function calls everything else
 */
 int countInversion(int arr[], int array_size)
 {
@@ -73,13 +68,11 @@ int mergeInv(int arr[], int temp[], int left, int mid, int right)
         }
     }
 
-    /* Copy the remaining elements of left subarray
-(if there are any) to temp*/
+    /* Copy remaining elements of left subarray to temp*/
     while (i <= mid - 1)
         temp[k++] = arr[i++];
 
-    /* Copy the remaining elements of right subarray
-(if there are any) to temp*/
+    /* Copy remaining elements of right subarray to temp*/
     while (j <= right)
         temp[k++] = arr[j++];
 
@@ -92,11 +85,6 @@ int mergeInv(int arr[], int temp[], int left, int mid, int right)
 
 int main()
 {
-    // int arr[] = { 1, 20, 6, 4, 5 };
-    // int n = sizeof(arr) / sizeof(arr[0]);
-    // int ans = countInversion(arr, n);
-    // cout << " Inversions: " << ans <<endl;
-
     // Test arrays
       int arr1[] = {3, 2, 6, 9, 1, 4, 5, 8, 7, 0};
       int arr2[] = {3, 2, 1};
