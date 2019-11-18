@@ -41,6 +41,10 @@ vector<string> BRGC(int n)
 
     return listToReturn;
 }
+
+/*
+* changes a string of 1s and 0s into to a int base 10
+*/
 int toBinary(string binaryString)
 {
     int binaryNum = 0;
@@ -56,6 +60,11 @@ int toBinary(string binaryString)
 
     return binaryNum;
 }
+/*
+* takes in a set of graycode and return
+* grayCode: is a vector of grayCode given by strings 
+* return: Returns a vector of string that tell which name was added or removed from the photo
+*/
 vector<string> outputOrderOfnames(vector<string> grayCode)
 {
     vector<string> orderOfnames;
@@ -101,18 +110,18 @@ vector<string> outputOrderOfnames(vector<string> grayCode)
     }
     return orderOfnames;
 }
+/* Gives the names of the people currently in the picture
+* grayCode: Gives a binary number in the form of a string
+* Return: Returns a list of names in the form of a vector
+*/
 vector<string> namesInPic(string grayCode)
 {
     vector<string> orderOfnames;
     int numberShift;
     int previousNum;
     int currentNum;
-   
-    //int sizeOfArray = names.size();
-
-    
         numberShift = toBinary(grayCode);
-        // cout << numberShift;
+        
         for (int j = 0; j < 4; j++)
         {
             if (numberShift & 1)
@@ -129,7 +138,7 @@ vector<string> namesInPic(string grayCode)
     
     return orderOfnames;
 }
-
+//Puts all the information calculated prior into a table 
 void createTable(vector<string> grayCode, vector<string> OrderOfnames)
 {
     vector<string> namesInPhoto;

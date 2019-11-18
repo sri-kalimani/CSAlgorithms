@@ -38,7 +38,7 @@ char *StringCleaning() {
     for (int i = 0; i < ArraySize; i++) {
         if (StringInput[i] != '!' || StringInput[i] != '?' || StringInput[i] != '.' ||
             StringInput[i] != ',') {
-            FormattedStringArr[i] == tolower(StringInput[i]);
+            FormattedStringArr[i] = tolower(StringInput[i]);
         }
     }
 
@@ -55,8 +55,8 @@ char *StringCleaning() {
 int main() {
     char* ThePalindromeString = StringCleaning();
     int rightside = strlen(ThePalindromeString) - 1;
-    PalindromeCheck(0, rightside, ThePalindromeString);
-
+    cout << PalindromeCheck(0, rightside, ThePalindromeString) << endl;
+    
 
     return 0;
 }
