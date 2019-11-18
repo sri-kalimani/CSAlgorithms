@@ -10,20 +10,20 @@
 
 using namespace std;
 
-bool PalindromeCheck(int leftside, int rightside, char *&ThePalindromeString) {
-    char *PalindromeArr = ThePalindromeString;
+bool PalindromeCheck(string ThePalindromeString) {
+    string PalindromeArr = ThePalindromeString;
     bool IsItAPalindrome = false;
-
-    if (leftside >= rightside) {
-        IsItAPalindrome = true;
-        return IsItAPalindrome;
+    cout << PalindromeArr << endl;
+    if (PalindromeArr.length() <=1) {
+        
+        return true;
     }
 
-    if (PalindromeArr[leftside] != PalindromeArr[rightside]) {
-        return IsItAPalindrome;
+    if (PalindromeArr.substr(0,1) != PalindromeArr.substr(PalindromeArr.length()-1,1)) {
+        return false;
     }
 
-    return PalindromeCheck(++leftside, --rightside, ThePalindromeString);
+    return PalindromeCheck(PalindromeArr.substr(1,PalindromeArr.length()-2));
 }
 
 char *StringCleaning() {
@@ -53,9 +53,9 @@ char *StringCleaning() {
 
 
 int main() {
-    char* ThePalindromeString = StringCleaning();
-    int rightside = strlen(ThePalindromeString) - 1;
-    cout << PalindromeCheck(0, rightside, ThePalindromeString) << endl;
+    //char* ThePalindromeString = StringCleaning();
+   // int rightside = strlen(ThePalindromeString) - 1;
+    cout << PalindromeCheck("theeht") << endl;
     
 
     return 0;
