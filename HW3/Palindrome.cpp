@@ -7,7 +7,6 @@
 #include <array>
 #include <string.h>
 
-
 using namespace std;
 
 bool PalindromeCheck(string ThePalindromeString) {
@@ -23,6 +22,8 @@ bool PalindromeCheck(string ThePalindromeString) {
     }
     return PalindromeCheck(PalindromeArr.substr(1,PalindromeArr.length()-2));
 }
+
+
 string stringClean(string sentence) {
     int arr_size = sentence.length();
 
@@ -40,7 +41,7 @@ string stringClean(string sentence) {
 
 
 int main() {
-   
+
     string userInput;
     cout << "Enter a string you would like to check if it's a palindrome: "<< endl;
     cin >> userInput;
