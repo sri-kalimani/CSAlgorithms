@@ -44,11 +44,13 @@ int main() {
 
     string userInput;
     cout << "Enter a string you would like to check if it's a palindrome: "<< endl;
-    cin >> userInput;
-     if(PalindromeCheck(stringClean(userInput))){
+   getline(cin,userInput);
+
+    if(PalindromeCheck(stringClean(userInput))){
          cout << "yes it is a palindrome" << endl;
      }else{
          cout << "no it isn't a palindrome" << endl;
      }
+
     return 0;
 }
