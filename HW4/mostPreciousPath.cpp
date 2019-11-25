@@ -134,29 +134,30 @@ return max_coor;
 }
 
 /* For each node, we  */
-vector<int> preciousPath (){
-  // until last row
-    // for each cell in row
-      // sum = current_gems + gems_of_max_neighbor
-      // save current_gems, gems_of_max_neighbor in path_so_far
-    // max_sum = max of sum
-    // update max_path with path_so_far
+int[] preciousPath (){
 
-    int max_sum=0;
-    vector<Coordinate> path_so_far, max_path;
-    vector<int> sum;
-    Coordinate max_coor = {0, 0};
-
+    // from first row, add max legal value from next row and update sum
+    cout<<"preciousPath"<<endl;
+    int row_sums[8];
     for (int i=0; i<ROWS; i++){
       for (int j=0; j<=COLS; j++){
-        vector<vector<int> > index = neighbors(i,j);
-        max_coor = max_neighbor(index);
-        sum[j] += gems[i][j] + gems[max_coor.i][max_coor.j];
+        row_sums[j] = gems[i][j];
+        cout<<row_sums[j]<< " ";
       }
-      // max_sum = *max_element(sum.begin(), sum.end());
+
+      cout<<endl;
+
+      for (int j=0; j<=COLS; j++){
+        vector<vector<int> > walkable_cells = neighbors(i, j);
+        Coordinate max_coor = max_neighbor(walkable_cells);
+        row_sums[j] += gems[max_coor.i][max_coor.j];
+        cout<<row_sums[j]<<" ";
+      }
+
+      cout<<endl;
     }
 
-    return sum;
+    return row_sums[8];
 
 }
 
@@ -184,12 +185,13 @@ int main(){
   //     index.pop_back();
   // }
   //
-  vector <int> all_sums = preciousPath();
-  for (int i=0; i<all_sums.size(); i++){
-      cout<<all_sums.at(i)<<endl;
-  }
+  // vector <int> all_sums = preciousPath();
+  // int all_sums[8] = preciousPath();
+  // for (int i=0; i<8; i++){
+  //     cout<<all_sums[i]<<endl;
+  // }
 
-
+preciousPath();
   /* Test max_heap */
 /*
   Gem_data gm1 = {gems[0][0], 0, 0};
