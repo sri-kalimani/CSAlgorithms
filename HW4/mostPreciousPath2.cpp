@@ -2,8 +2,12 @@
 #include <stdio.h>
 #include <math.h>
 #include <array>
+#include <vector>
 
 using namespace std;
+
+int max_coorR, max_coorC;
+int path[8][2];
 
 int gems[][8] = {
     {79, 71, 18, 20, 34, 51, 93, 65},
@@ -31,30 +35,44 @@ int maxNeighbor(int i, int j)
     {
         if (dprograming[i - 1][j] > dprograming[i - 1][j + 1])
         {
+            max_coorR = i-1; max_coorC = j;
             return dprograming[i - 1][j];
+
         }
-        else
-            return dprograming[i - 1][j + 1];
+        else{
+          max_coorR = i-1; max_coorC = j+1;
+          return dprograming[i - 1][j + 1];
+        }
+
     }
     else if (j == 7)
     {
         if (dprograming[i - 1][j] > dprograming[i - 1][j - 1])
         {
+            max_coorR = i-1; max_coorC = j;
             return dprograming[i - 1][j];
         }
-        else
-            return dprograming[i - 1][j - 1];
+        else{
+          max_coorR = i-1; max_coorC = j-1;
+          return dprograming[i - 1][j - 1];
+        }
+
     }
     else if (dprograming[i - 1][j] > dprograming[i - 1][j + 1] && dprograming[i - 1][j] > dprograming[i - 1][j - 1])
     {
+        max_coorR = i-1; max_coorC = j;
         return dprograming[i - 1][j];
     }
     else if (dprograming[i - 1][j + 1] > dprograming[i - 1][j - 1])
     {
+        max_coorR = i-1; max_coorC = j+1;
         return dprograming[i - 1][j + 1];
     }
-    else
+    else{
+        max_coorR = i-1; max_coorC = j-1;
         return dprograming[i - 1][j - 1];
+    }
+
 }
 void fillIntable()
 {
@@ -65,6 +83,30 @@ void fillIntable()
             dprograming[i][j] = dprograming[i][j] + maxNeighbor(i, j);
         }
     }
+}
+
+void find_path(){
+
+  int max_c = 0;
+  for (int i=0; i<8; i++){
+    if (dprograming[7][max_c] < dprograming[7][i]){
+      max_c = i;
+    }
+  }
+
+  path[7][0] = 7; path[7][1] = max_c;
+  int rowT, colT, prev_gem;
+  rowT = 7; colT = max_c;
+
+  for (int i=6; i>=0; i--){
+    prev_gem = maxNeighbor(rowT, colT);
+    rowT = max_coorR;
+    colT = max_coorC;
+    path[i][0] = rowT + 1;
+    path[i][1] = colT + 1;
+  }
+
+
 }
 
 int main()
@@ -78,5 +120,14 @@ int main()
             printf("%d  ", dprograming[i][j]);
         }
         cout << endl;
+    }
+
+    find_path();
+
+    for (int i=0; i<8; i++){
+      for (int j=0; j<2; j++){
+        cout<<path[i][j]<<" ";
+      }
+      cout<<endl;
     }
 }
