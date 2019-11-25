@@ -2,11 +2,10 @@
 #include <stdio.h>
 #include <math.h>
 #include <array>
-#include <vector>
 
 using namespace std;
 
-int max_coorR, max_coorC;
+int max_coorR, max_coorC, gems_collected, start_gems;
 int path[8][2];
 
 int gems[][8] = {
@@ -93,8 +92,9 @@ void find_path(){
       max_c = i;
     }
   }
+  gems_collected = dprograming[7][max_c];
 
-  path[7][0] = 7; path[7][1] = max_c;
+  path[7][0] = 8; path[7][1] = max_c+1;
   int rowT, colT, prev_gem;
   rowT = 7; colT = max_c;
 
@@ -106,6 +106,7 @@ void find_path(){
     path[i][1] = colT + 1;
   }
 
+  start_gems = dprograming[path[0][0] -1][path[0][1] -1];
 
 }
 
@@ -113,6 +114,7 @@ int main()
 {
     fillIntable();
 
+    cout<<"Table:"<<endl;
     for (int i = 0; i < 8; i++)
     {
         for (int j = 0; j < 8; j++)
@@ -122,12 +124,20 @@ int main()
         cout << endl;
     }
 
-    find_path();
+    cout<<endl;
 
+    find_path();
+    cout<<"Starting vault: "<< path[0][0]<<" "<<path[0][1]<<endl;
+    cout<<"Path: "<<endl;
     for (int i=0; i<8; i++){
       for (int j=0; j<2; j++){
         cout<<path[i][j]<<" ";
       }
+      cout<<dprograming[path[i][0] -1][path[i][1] -1];
       cout<<endl;
     }
+
+    cout<<"Gems collected: "<<gems_collected<<endl;
+    cout<<"Arkenstone vault: "<<path[7][0]<<" "<<path[7][1]<<endl;
+
 }
