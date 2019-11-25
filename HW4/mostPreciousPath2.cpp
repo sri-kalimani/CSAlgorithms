@@ -2,8 +2,12 @@
 #include <stdio.h>
 #include <math.h>
 #include <array>
+#include <vector>
 
 using namespace std;
+
+int max_coorR, max_coorC;
+int path[8][2];
 
 int gems[][8] = {
     {79, 71, 18, 20, 34, 51, 93, 65},
@@ -32,30 +36,50 @@ int maxNeighbor(int i, int j)
     {
         if (dprograming[i - 1][j] > dprograming[i - 1][j + 1])
         {
+            max_coorR = i - 1;
+            max_coorC = j;
             return dprograming[i - 1][j];
         }
         else
+        {
+            max_coorR = i - 1;
+            max_coorC = j + 1;
             return dprograming[i - 1][j + 1];
+        }
     }
     else if (j == 7)
     {
         if (dprograming[i - 1][j] > dprograming[i - 1][j - 1])
         {
+            max_coorR = i - 1;
+            max_coorC = j;
             return dprograming[i - 1][j];
         }
         else
+        {
+            max_coorR = i - 1;
+            max_coorC = j - 1;
             return dprograming[i - 1][j - 1];
+        }
     }
     else if (dprograming[i - 1][j] > dprograming[i - 1][j + 1] && dprograming[i - 1][j] > dprograming[i - 1][j - 1])
     {
+        max_coorR = i - 1;
+        max_coorC = j;
         return dprograming[i - 1][j];
     }
     else if (dprograming[i - 1][j + 1] > dprograming[i - 1][j - 1])
     {
+        max_coorR = i - 1;
+        max_coorC = j + 1;
         return dprograming[i - 1][j + 1];
     }
     else
+    {
+        max_coorR = i - 1;
+        max_coorC = j - 1;
         return dprograming[i - 1][j - 1];
+    }
 }
 void fillIntable()
 {
@@ -74,63 +98,40 @@ int numberOrgin(int i, int j)
     int num2 = 0;
     int num3 = 0;
 
-    if (j == 0)
+    void find_path()
     {
-        num1 = dprograming[i][j] - dprograming[i - 1][j];
-        num2 = dprograming[i][j] - dprograming[i - 1][j + 1];
-    }
-    else if (j == 7)
-    {
-        num1 = dprograming[i][j] - dprograming[i - 1][j];
-        num3 = dprograming[i][j] - dprograming[i - 1][j - 1];
-    }
-    else
-    {
-        num1 = dprograming[i][j] - dprograming[i - 1][j];
-        num2 = dprograming[i][j] - dprograming[i - 1][j + 1];
-        num3 = dprograming[i][j] - dprograming[i - 1][j - 1];
-    }
 
-    if (num1 == gems[i - 1][j])
-    {
-        return j;
-    }
-    else if (num2 == gems[i - 1][j + 1])
-    {
-        return (j + 1);
-    }
-    else if (num3 == gems[i - 1][j - 1])
-    {
-        return (j - 1);
-    }
-}
-//updates the path array
-void findPath()
-{
-    int max, column;
-    max = 0;
-    column = 0;
-    for (int i = 0; i < 8; i++)
-    {
-        if (max < dprograming[7][i])
+        int max_c = 0;
+        for (int i = 0; i < 8; i++)
         {
-            column = i;
+            if (dprograming[7][max_c] < dprograming[7][i])
+            {
+                max_c = i;
+            }
+        }
+
+        path[7][0] = 7;
+        path[7][1] = max_c;
+        int rowT, colT, prev_gem;
+        rowT = 7;
+        colT = max_c;
+
+        for (int i = 6; i >= 0; i--)
+        {
+            prev_gem = maxNeighbor(rowT, colT);
+            rowT = max_coorR;
+            colT = max_coorC;
+            path[i][0] = rowT + 1;
+            path[i][1] = colT + 1;
         }
     }
-    path[7][column] = 1;
-    printf("The maximum gems: %d", max);
-    for (int i = 7; i > 0; i--)
-    {
-        column = numberOrgin(i, column);
-        path[i][column] = 1;
-    }
-}
-int main()
-{
-    fillIntable();
-    findPath();
 
-    /*for (int i = 0; i < 8; i++)
+    int main()
+    {
+        fillIntable();
+        findPath();
+
+        /*for (int i = 0; i < 8; i++)
     {
         for (int j = 0; j < 8; j++)
         {
@@ -138,12 +139,23 @@ int main()
         }
         cout << endl;
     }*/
-    for (int i = 0; i < 8; i++)
-    {
-        for (int j = 0; j < 8; j++)
+        for (int i = 0; i < 8; i++)
         {
-            printf("%d  ", path[i][j]);
+            for (int j = 0; j < 8; j++)
+            {
+                printf("%d  ", path[i][j]);
+            }
+            cout << endl;
         }
-        cout << endl;
+
+        find_path();
+
+        for (int i = 0; i < 8; i++)
+        {
+            for (int j = 0; j < 2; j++)
+            {
+                cout << path[i][j] << " ";
+            }
+            cout << endl;
+        }
     }
-}
