@@ -8,25 +8,10 @@ using namespace std;
 #define ROWS 7
 #define COLS 7
 
-struct Gem_data{
-  int count;
-  int i;
-  int j;
-  Gem_data(int count, int i, int j) : count(count), i(i), j(j) {}
-};
-
 struct Coordinate{
   int i;
   int j;
   Coordinate(int i, int j) : i(i), j(j) {}
-};
-
-struct max_sort
-{
-    inline bool operator() (const Gem_data& struct1, const Gem_data& struct2)
-    {
-        return (struct1.count < struct2.count);
-    }
 };
 
 int gems[][8] = {
@@ -40,9 +25,16 @@ int gems[][8] = {
                   {89, 70, 73, 83, 90, 22, 44, 92}
                 };
 
-vector<Gem_data> gem_heap;
-int gems_found = 0;
-
+int gems_copy[][8] = {
+                  {79, 71, 18, 20, 34, 51, 93, 65},
+                  {73, 38, 24, 49, 18, 6, 40, 74},
+                  {31, 5, 63, 10, 32, 40, 14, 13},
+                  {13, 78, 48, 19, 78, 11, 90, 94},
+                  {22, 93, 68, 11, 56, 63, 49, 35},
+                  {85, 52, 27, 5, 94, 91, 82, 62},
+                  {46, 23, 99, 77, 10, 42, 1, 72},
+                  {89, 70, 73, 83, 90, 22, 44, 92}
+                };
 
 /* Returns legal neighbors of a given cell */
 vector<vector<int> > neighbors(int i, int j){
@@ -51,44 +43,44 @@ vector<vector<int> > neighbors(int i, int j){
     vector<vector<int> > pair;
 
     //if cell is left edge: i+1, j; i+1, j+1
-    if (j==0 && i<ROWS){
-      index.push_back(i+1);
+    if (j==0 && i<=ROWS){
+      index.push_back(i-1);
       index.push_back(j);
       pair.push_back(index);
       index.clear();
 
-      index.push_back(i+1);
+      index.push_back(i-1);
       index.push_back(j+1);
       pair.push_back(index);
       index.clear();
     }
     //if cell is right edge: i+1, j; i+1,j-1
-    else if (j==COLS && i<ROWS){
-      index.push_back(i+1);
+    else if (j==COLS && i<=ROWS){
+      index.push_back(i-1);
       index.push_back(j);
       pair.push_back(index);
       index.clear();
 
-      index.push_back(i+1);
+      index.push_back(i-1);
       index.push_back(j-1);
       pair.push_back(index);
       index.clear();
     }
 
     //not edge cell: i+1, j; i+1, j+1; i+1, j-1
-    else if (i>=0 && i<=ROWS-1 && j>=1 && j<=COLS-1){
-      index.push_back(i+1);
+    else if (i>=0 && i<=ROWS && j>=1 && j<=COLS-1){
+      index.push_back(i-1);
       index.push_back(j);
       pair.push_back(index);
       index.clear();
 
-      index.push_back(i+1);
-      index.push_back(j+1);
+      index.push_back(i-1);
+      index.push_back(j-1);
       pair.push_back(index);
       index.clear();
 
-      index.push_back(i+1);
-      index.push_back(j-1);
+      index.push_back(i-1);
+      index.push_back(j+1);
       pair.push_back(index);
       index.clear();
     }
@@ -117,47 +109,41 @@ return max_coor;
 
 }
 
-Coordinate max_sum_row (vector<vector<int> > sums_row){
-int i=0;
-
-Coordinate max_coor = {sums_row.at(i)[0], sums_row.at(i)[1]};
-
-  while (i < sums_row.size()){
-    if (gems[sums_row.at(i)[0]][sums_row.at(i)[1]] > gems[max_coor.i][max_coor.j]){
-      max_coor.i = sums_row.at(i)[0];
-      max_coor.j = sums_row.at(i)[1];
-    }
-    i++;
-  }
-return max_coor;
-
-}
-
 /* For each node, we  */
-int[] preciousPath (){
+vector<int> preciousPath (){
 
-    // from first row, add max legal value from next row and update sum
     cout<<"preciousPath"<<endl;
-    int row_sums[8];
-    for (int i=0; i<ROWS; i++){
-      for (int j=0; j<=COLS; j++){
-        row_sums[j] = gems[i][j];
-        cout<<row_sums[j]<< " ";
-      }
+    vector<int> row_sums;
 
-      cout<<endl;
+
+    // for (int i=0; i<=COLS; i++){
+    //   row_sums.push_back(gems[1][i]);
+    //   cout<<row_sums[i]<<" ";
+    // }
+    //
+    for (int i=0; i<=COLS; i++){
+      cout<<gems_copy[0][i]<<" ";
+    }
+    cout<<endl;
+
+    for (int i=1; i<=ROWS; i++){
 
       for (int j=0; j<=COLS; j++){
         vector<vector<int> > walkable_cells = neighbors(i, j);
         Coordinate max_coor = max_neighbor(walkable_cells);
-        row_sums[j] += gems[max_coor.i][max_coor.j];
-        cout<<row_sums[j]<<" ";
+        // row_sums.at(j) += gems[max_coor.i][max_coor.j];
+        gems_copy[i][j] += gems_copy[max_coor.i][max_coor.j];
+
+        cout<<gems_copy[i][j]<<" ";
       }
 
       cout<<endl;
     }
 
-    return row_sums[8];
+
+
+
+    return row_sums;
 
 }
 
@@ -185,32 +171,7 @@ int main(){
   //     index.pop_back();
   // }
   //
-  // vector <int> all_sums = preciousPath();
-  // int all_sums[8] = preciousPath();
-  // for (int i=0; i<8; i++){
-  //     cout<<all_sums[i]<<endl;
-  // }
-
-preciousPath();
-  /* Test max_heap */
-/*
-  Gem_data gm1 = {gems[0][0], 0, 0};
-  Gem_data gm2 = {gems[0][1], 0, 1};
-  Gem_data gm3 = {gems[7][7], 7, 7};
-  Gem_data gm4 = {gems[1][1], 1, 1};
-
-  vector<Gem_data> v1;
-  v1.push_back(gm1);
-  v1.push_back(gm2);
-  v1.push_back(gm3);
-  v1.push_back(gm4);
-  v1.push_back(Gem_data(gems[2][2], 2, 2));
-
-  make_heap(v1.begin(), v1.end(), max_sort());
-  cout << v1.front().i << ","<< v1.front().j<<endl;
-  v1.pop_back();
-  cout << v1.back().i << ","<< v1.back().j<<endl;
-*/
+  vector <int> all_sums = preciousPath();
 
   return 0;
 }
