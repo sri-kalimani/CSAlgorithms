@@ -111,4 +111,49 @@ int main()
   load = (double)takenSpaces / 1000.0;
   cout << "There are " << takenSpaces << " Taken Spaces in the table" << endl;
   cout << "This gives a load factor of " << load << endl;
+
+  int EmptyCounter = 0;
+  // EmptyCounter is the int that counts the amount of empty spaces
+  // inbetween full spaces in the hashmap
+
+  int CompareCounter = 0;
+
+  int StartPoint = -1;
+  int EndPoint = -1;
+
+  int BestStartPoint = -1;
+  int BestEndPoint = -1;
+
+  for(int i = 0; i < 1000; i++){
+    if(fixTable[i] == 0){ 
+      if(EmptyCounter == 0){
+        StartPoint = i;
+        cout << "Start point begins at " << StartPoint << endl; 
+      }
+      EmptyCounter++;
+      cout << "This is the EmptyCounter " << EmptyCounter << endl;
+       if (StartPoint > -1 && (i >= 999)){
+        EndPoint = i;
+        cout << "End point ends at " << EndPoint << endl;
+      }
+    }
+    else if(fixTable[i] == 1){
+      if(EmptyCounter > CompareCounter){
+      CompareCounter = EmptyCounter;
+      cout << "The largest gap is now " << CompareCounter << endl;
+      EmptyCounter = 0;
+      if (StartPoint > -1 || (i >= 999)){
+        EndPoint = i;
+        cout << "End point ends at " << EndPoint << endl;
+        BestEndPoint = EndPoint;
+        BestStartPoint = StartPoint;
+        cout << "Best end point ends at " << BestStartPoint << endl;
+        cout << "Best end point ends at " << BestEndPoint << endl;
+        }
+      } 
+    } 
+  }
+
+  cout << "There is nothing from Start point " << StartPoint << " to endpoint " << EndPoint << endl;
+
 }
