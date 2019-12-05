@@ -1,3 +1,7 @@
+/*
+Submissions for Bryan Gass, Sriranjani Kalimani and Theodore Campbell
+*/
+
 #include <iostream>
 #include <stdio.h>
 #include <math.h>
