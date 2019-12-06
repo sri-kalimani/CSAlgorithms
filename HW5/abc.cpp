@@ -9,7 +9,7 @@ vector<string> v[1000];
 //map<string, int> mymap, fix;
 string table[1000];
 int actualHashValue[1000];
-int fixTable[1000];
+int fixTable[1000] = {0};
 
 int main()
 {
@@ -124,36 +124,37 @@ int main()
   int BestStartPoint = -1;
   int BestEndPoint = -1;
 
-  for(int i = 0; i < 1000; i++){
-    if(fixTable[i] == 0){ 
-      if(EmptyCounter == 0){
+  for (int i = 0; i < 1000; i++)
+  {
+    if (fixTable[i] == 0)
+    {
+      if (EmptyCounter == 0)
+      {
         StartPoint = i;
-        cout << "Start point begins at " << StartPoint << endl; 
       }
       EmptyCounter++;
-      cout << "This is the EmptyCounter " << EmptyCounter << endl;
-       if (StartPoint > -1 && (i >= 999)){
+
+      if (StartPoint > -1 && (i >= 999))
+      {
         EndPoint = i;
-        cout << "End point ends at " << EndPoint << endl;
       }
     }
-    else if(fixTable[i] == 1){
-      if(EmptyCounter > CompareCounter){
-      CompareCounter = EmptyCounter;
-      cout << "The largest gap is now " << CompareCounter << endl;
-      EmptyCounter = 0;
-      if (StartPoint > -1 || (i >= 999)){
-        EndPoint = i;
-        cout << "End point ends at " << EndPoint << endl;
-        BestEndPoint = EndPoint;
-        BestStartPoint = StartPoint;
-        cout << "Best end point ends at " << BestStartPoint << endl;
-        cout << "Best end point ends at " << BestEndPoint << endl;
+    else if (fixTable[i] == 1)
+    {
+      if (EmptyCounter > CompareCounter)
+      {
+        CompareCounter = EmptyCounter;
+
+        EmptyCounter = 0;
+        if (StartPoint > -1 || (i >= 999))
+        {
+          EndPoint = i;
+          BestEndPoint = EndPoint;
+          BestStartPoint = StartPoint;
         }
-      } 
-    } 
+      }
+    }
   }
-
-  cout << "There is nothing from Start point " << StartPoint << " to endpoint " << EndPoint << endl;
-
+  cout << "The largest gap is now " << CompareCounter << endl;
+  cout << "There is nothing from Start point " << BestStartPoint << " to endpoint " << BestEndPoint << endl;
 }
