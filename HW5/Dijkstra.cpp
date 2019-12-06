@@ -59,14 +59,14 @@ void dijkstra(int s,int f){
   path.push_back(s);
   reverse(path.begin(), path.end());
 
-  cout<<"Shortest Distance from "<<s<< " to "<<f<<" is ";
+  cout<<"Shortest Distance from "<<s-1<< " to "<<f-1<<" is ";
   cout<<d[f]<<endl;
   cout<<"The path:"<<endl;
   for(int i=0;i<path.size();i++)
-    cout<<path[i]<<" ";
+    cout<<path[i]-1<<" ";
   cout<<endl;
   for(int i=1;i<path.size();i++)
-    cout<<path[i-1]<<" to "<<path[i]<<" by distance "<<a[path[i-1]][path[i]]<<endl;
+    cout<<path[i-1]-1<<" to "<<path[i]-1<<" by distance "<<a[path[i-1]][path[i]]<<endl;
   cout<<endl;
 }
 
@@ -102,6 +102,8 @@ main()
   cout<<endl;
   cout<<endl;
   cout<<endl;
+  start++;
+  end++;
 
   dijkstra(start,end);
 }
