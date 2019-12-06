@@ -17,7 +17,6 @@ void dijkstra(int s,int f){
   priority_queue<pair<int,int> >q;
   q.push(make_pair(0,s));
   d[s]=0;
-  fix[s]=1;
 
 
   while(!q.empty()){
