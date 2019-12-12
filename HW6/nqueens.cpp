@@ -44,10 +44,12 @@ bool isLegalPosition(int *queenRank, int boardSize)
     int board[boardSize][boardSize]; // create the board
     for (int i = 0; i < boardSize; i++)
     {
-        for (int j = 0; j < boardSize; i++)
+        for (int j = 0; j < boardSize; j++)
         {
             board[i][j] = 0;
+            // cout<<board[i][j]<<" ";
         }
+        // cout<<endl;
     }
 
     for (int i = 0; i < boardSize; i++)
@@ -70,6 +72,7 @@ bool isLegalPosition(int *queenRank, int boardSize)
                 {
                     if (board[k][l] == 1)
                     {
+                        cout<<"diagonal taken"<<endl;
                         return false;
                     }
                 }
@@ -77,6 +80,7 @@ bool isLegalPosition(int *queenRank, int boardSize)
                 {
                     if (board[k][j] == 1)
                     {
+                        cout<<"row taken"<<endl;
                         return false;
                     }
                 }
@@ -84,6 +88,7 @@ bool isLegalPosition(int *queenRank, int boardSize)
                 {
                     if (board[i][l] == 1)
                     {
+                        cout<<"column taken"<<endl;
                         return false;
                     }
                 }
@@ -91,6 +96,7 @@ bool isLegalPosition(int *queenRank, int boardSize)
         }
     }
 
+    cout<<"positions are fine"<<endl;
     return true;
 }
 
@@ -127,9 +133,11 @@ int main()
             queenRank[i]= -1;
         }
     }
-        for(int i =0;i < boardSize;i++){
-            cout << queenRank[i] << endl;
-        }
+    // for(int i =0;i < boardSize;i++){
+    //     cout << queenRank[i] << endl;
+    // }
+    bool status = isLegalPosition(queenRank, boardSize);
+    cout<<status;
 
         return 1;
 }
