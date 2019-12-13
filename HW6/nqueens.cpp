@@ -6,39 +6,24 @@
 #include <string>
 #include <array>
 
+#include<bits/stdc++.h>
+
 using namespace std;
 
-void printBoard(int *queenRank, int boardSize)
-{
-    for (int i = 0; i < boardSize; i++)
-    {
-        for (int j = 0; j < boardSize; j++)
-        {
-            queenRank[i] == j ? cout << "1 " : cout << "0 ";
-        }
-        cout << endl;
-    }
-}
 
-int* successor(int *queenRank, int boardSize)
-{
-    for (int i = 0; i < boardSize; i++)
-    {
-        if (queenRank[i] == -1)
-        {
-            for (int j = 0; j < boardSize; j++)
-            {
-                if (find(queenRank, queenRank + i, j) == (queenRank + i))
-                {
-                    queenRank[i] = j;
-                    break;
-                }
-            }
-            break;
-        }
-    }
+int board[100][100];
 
-    return queenRank;
+void printBoard(int n)
+{
+    static int k = 1;
+    printf("%d-\n",k++);
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < n; j++)
+            printf(" %d ", board[i][j]);
+        printf("\n");
+    }
+    printf("\n");
 }
 
 
@@ -161,7 +146,7 @@ int* nextLegalPosition(int *queenRank, int boardSize)
       }
 
 
-      for (int i=0; i<boardSize; i++){
+      for (int i=boardSize-1; i>=0; i--){
 
         newPos[i] = queenRank[i];
 
@@ -173,7 +158,7 @@ int* nextLegalPosition(int *queenRank, int boardSize)
 
         }
 
-        for (int j=0; j<boardSize; j++){
+        for (int j=boardSize-1; j>=0; j--){
 
           newPosCopy[i] = j;
 
@@ -238,58 +223,117 @@ int* nextLegalPosition(int *queenRank, int boardSize)
 
     }
 
-
-
-
   return queenRank;
 
 }
 
+
+bool isLegal(int n, int row, int col)
+{
+    int i, j;
+
+    for (i = 0; i < col; i++)
+        if (board[row][i])
+            return false;
+
+    for (i=row, j=col; i>=0 && j>=0; i--, j--)
+        if (board[i][j])
+            return false;
+
+    for (i=row, j=col; j>=0 && i<n; i++, j--)
+        if (board[i][j])
+            return false;
+
+    return true;
+}
+
+bool allSolutions(int n, int col)
+{
+    if (col == n)
+    {
+        printBoard(n);
+        return true;
+    }
+
+    bool res = false;
+    for (int i = 0; i < n; i++)
+    {
+        if ( isLegal(n, i, col) )
+        {
+
+            board[i][col] = 1;
+
+            res = allSolutions(n, col + 1) || res;
+
+            board[i][col] = 0;
+        }
+    }
+
+    return res;
+}
+
+void backtrackAll(int n)
+{
+    memset(board, 0, sizeof(board));
+
+    if (allSolutions(n, 0) == false)
+    {
+        printf("Solution does not exist");
+        return ;
+    }
+
+    return ;
+}
+
 int main()
 {
-    int boardSize;
-    int queenPositions;
-    cout << "How big is the board?" << endl;
-    cin >> boardSize;
+    // int boardSize;
+    // int queenPositions;
+    // cout << "How big is the board?" << endl;
+    // cin >> boardSize;
+    //
+    // int* queenRank = new int[boardSize];
+    //
+    // cout << "Enter the positions for the queens from 1 to board size and enter -1 if you would like it to be a partial board" << endl;
+    // int breakLoc = 0;
+    // for(int i =0; i < boardSize;i++){
+    //     cin >> queenPositions;
+    //     if(queenPositions == -1){
+    //         breakLoc = i;
+    //         break;
+    //     }else if(queenPositions < 1 || queenPositions > boardSize){
+    //         cout << "Error not valid input please try again" << endl;
+    //         i = i-1;
+    //     }
+    //     else {
+    //         queenRank[i] =queenPositions-1;
+    //     }
+    // }
+    // if(breakLoc != 0){
+    //     for(int i =breakLoc; i < boardSize; i++){
+    //         queenRank[i]= -1;
+    //     }
+    // }
+    //
+    // bool status = isLegalPosition(queenRank, boardSize);
+    // cout<<"board legal status "<<status<<endl;
+    //
+    // for (int i=0; i<boardSize; i++){
+    //   cout<<queenRank[i]<<" ";
+    // }
+    //
+    // cout<<endl;
+    //
+    // int* nextQueenPos = nextLegalPosition(queenRank, boardSize);
+    // cout<<"Next legal position"<<endl;
+    // for (int i=0; i<boardSize; i++){
+    //   cout<<nextQueenPos[i]+1<<" ";
+    // }
+      int n;
+      cout<<"Enter board size ";
+      cin>>n;
 
-    int* queenRank = new int[boardSize];
 
-    cout << "Enter the positions for the queens from 1 to board size and enter -1 if you would like it to be a partial board" << endl;
-    int breakLoc = 0;
-    for(int i =0; i < boardSize;i++){
-        cin >> queenPositions;
-        if(queenPositions == -1){
-            breakLoc = i;
-            break;
-        }else if(queenPositions < 1 || queenPositions > boardSize){
-            cout << "Error not valid input please try again" << endl;
-            i = i-1;
-        }
-        else {
-            queenRank[i] =queenPositions-1;
-        }
-    }
-    if(breakLoc != 0){
-        for(int i =breakLoc; i < boardSize; i++){
-            queenRank[i]= -1;
-        }
-    }
-
-    bool status = isLegalPosition(queenRank, boardSize);
-    cout<<"board legal status "<<status<<endl;
-
-    for (int i=0; i<boardSize; i++){
-      cout<<queenRank[i]<<" ";
-    }
-
-    cout<<endl;
-
-    int* nextQueenPos = nextLegalPosition(queenRank, boardSize);
-    cout<<"Next legal position"<<endl;
-    for (int i=0; i<boardSize; i++){
-      cout<<nextQueenPos[i]+1<<" ";
-    }
-
-
+      backtrackAll(n);
         return 1;
 }
