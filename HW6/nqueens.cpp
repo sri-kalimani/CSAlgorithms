@@ -29,7 +29,7 @@ bool successor(int *queenRank, int boardSize, int row)
         queenRank[row] = i;
         if (isLegalPosition(queenRank, boardSize))
         {
-            cout << "gets here with the value being" << i << endl;
+            cout << "gets here with the value being " << i << endl;
             return 1;
         }
     }
@@ -181,7 +181,7 @@ int main()
         else if (queenPositions < 1 || queenPositions > boardSize)
         {
             cout << "Error not valid input please try again" << endl;
-            i = i - 1;
+            i -= 1;
         }
         else
         {
