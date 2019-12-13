@@ -39,8 +39,6 @@ bool successor(int *queenRank, int boardSize, int row)
 
 bool isLegalPosition(int *queenRank, int boardSize)
 {
-    cout << "Breaks on print board" << endl;
-    fflush(stdout);
     int board[boardSize][boardSize]; // create the board
     for (int i = 0; i < boardSize; i++)
     {
@@ -107,8 +105,7 @@ bool nextLegalPosition(int *queenRank, int boardSize)
 
     for (int i = boardSize - 1; i >= 0; i--)
     {
-        cout << queenRank[i] << endl;
-        if (queenRank[i] >= 0 && currentRow < i)
+        if (queenRank[i] >= 0)
         {
             currentRow = i + 1;
             break;
@@ -130,7 +127,7 @@ bool nextLegalPosition(int *queenRank, int boardSize)
     }
     else
     {
-        queenRank[currentRow] = -1;
+        queenRank[currentRow - 1] = -1;
         return nextLegalPosition(queenRank, boardSize);
     }
     return false;
@@ -172,7 +169,7 @@ int main()
     int *queenRank = new int[boardSize];
 
     cout << "Enter the positions for the queens from 1 to board size and enter -1 if you would like it to be a partial board" << endl;
-    int breakLoc = 0;
+    int breakLoc = -1;
     for (int i = 0; i < boardSize; i++)
     {
         cin >> queenPositions;
@@ -191,7 +188,7 @@ int main()
             queenRank[i] = queenPositions - 1;
         }
     }
-    if (breakLoc != 0)
+    if (breakLoc > 0)
     {
         for (int i = breakLoc; i < boardSize; i++)
         {
@@ -203,6 +200,6 @@ int main()
     cout << nextLegalPosition(queenRank, boardSize) << endl;
     printBoard(queenRank, boardSize);
     cout << isLegalPosition(queenRank, boardSize) << endl;
-
+    // findFirstSol(5);
     return 1;
 }
