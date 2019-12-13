@@ -29,11 +29,10 @@ bool successor(int *queenRank, int boardSize, int row)
         queenRank[row] = i;
         if (isLegalPosition(queenRank, boardSize))
         {
-            cout << "gets here with the value being" << i << endl;
             return 1;
         }
     }
-    queenRank[row] = intialValue;
+    queenRank[row] = -1;
     return 0;
 }
 
@@ -102,33 +101,54 @@ bool isLegalPosition(int *queenRank, int boardSize)
 bool nextLegalPosition(int *queenRank, int boardSize)
 {
     int currentRow = 0;
-
+    //finds the current row
     for (int i = boardSize - 1; i >= 0; i--)
     {
+        if (i == 0)
+        {
+            currentRow = 0;
+            break;
+        }
         if (queenRank[i] >= 0)
         {
             currentRow = i + 1;
             break;
         }
     }
-    cout << currentRow << endl;
-    cout << boardSize << endl;
-    if (currentRow == boardSize)
-    {
-        if (isLegalPosition(queenRank, boardSize) && !solFound)
+    //sees if it's on the first row
+    if (currentRow == 0)
+    { //if it is not at the edge
+        if (queenRank[0] != boardSize)
         {
-            solFound = true;
-            return 1;
+            queenRank[0]++;
+            successor(queenRank, boardSize, currentRow + 1);
         }
-    }
-    if (successor(queenRank, boardSize, currentRow))
-    {
-        return true;
     }
     else
     {
-        queenRank[currentRow - 1] = -1;
-        return nextLegalPosition(queenRank, boardSize);
+        //if it is at the end and a legal position then it is a solution
+        if (currentRow == boardSize - 1)
+        {
+            if (isLegalPosition(queenRank, boardSize) && !solFound)
+            {
+                solFound = true;
+                return 1;
+            }
+        }
+        //then it is at the edge of the board
+        if (successor(queenRank, boardSize, currentRow))
+        {
+            return true;
+        }
+        else
+        { //clear the row above it if it is at an edge
+            if (queenRank[currentRow - 2] == boardSize - 1)
+            {
+                queenRank[currentRow - 2] = -1;
+            } //if failing move back up
+            queenRank[currentRow - 1] = -1;
+            return nextLegalPosition(queenRank, boardSize);
+        }
     }
     return false;
 }
@@ -137,20 +157,29 @@ void findFirstSol(int n)
     int solution = 1;
     for (int i = 4; i < n; i++)
     {
+        //makes a new board for each n
         int *queenRank = new int[i];
-        for (int j = 0; j < i; j++)
+        solFound = 0;     //sets solution found
+        queenRank[0] = 0; //sets the intial of the board to be 1 in the corner
+        //sets the rest of the queenRank to 0
+        for (int j = 1; j < i; j++)
         {
             queenRank[j] = -1;
         }
+        //sets solution to be true while looping
         solution = 1;
         while (solution)
-        {
-            isLegalPosition(queenRank, i);
+        { //calls next legal to fill up the board
+            nextLegalPosition(queenRank, i);
+            printBoard(queenRank, i);
+            cout << endl;
+            //exits if solution found
             if (solFound)
             {
                 solution = 0;
             }
         }
+        //outputs the solution
         for (int j = 0; j < i; j++)
         {
             cout << queenRank[j] << endl;
@@ -178,6 +207,7 @@ int main()
             breakLoc = i;
             break;
         }
+
         else if (queenPositions < 1 || queenPositions > boardSize)
         {
             cout << "Error not valid input please try again" << endl;
@@ -196,10 +226,16 @@ int main()
         }
     }
 
+    cout << nextLegalPosition(queenRank, boardSize) << endl;
     printBoard(queenRank, boardSize);
     cout << nextLegalPosition(queenRank, boardSize) << endl;
     printBoard(queenRank, boardSize);
-    cout << isLegalPosition(queenRank, boardSize) << endl;
-    // findFirstSol(5);
+    cout << nextLegalPosition(queenRank, boardSize) << endl;
+    printBoard(queenRank, boardSize);
+    cout << nextLegalPosition(queenRank, boardSize) << endl;
+    printBoard(queenRank, boardSize);
+
+    free(queenRank);
+    findFirstSol(6);
     return 1;
 }
