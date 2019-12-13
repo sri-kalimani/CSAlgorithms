@@ -127,7 +127,7 @@ bool nextLegalPosition(int *queenRank, int boardSize)
     else
     {
         //if it is at the end and a legal position then it is a solution
-        if (currentRow == boardSize - 1)
+        if (currentRow == boardSize)
         {
             if (isLegalPosition(queenRank, boardSize) && !solFound)
             {
@@ -171,8 +171,7 @@ void findFirstSol(int n)
         while (solution)
         { //calls next legal to fill up the board
             nextLegalPosition(queenRank, i);
-            printBoard(queenRank, i);
-            cout << endl;
+            cout << "stuck on 6?";
             //exits if solution found
             if (solFound)
             {
@@ -182,8 +181,9 @@ void findFirstSol(int n)
         //outputs the solution
         for (int j = 0; j < i; j++)
         {
-            cout << queenRank[j] << endl;
+            cout << queenRank[j];
         }
+        cout << endl;
         free(queenRank);
     }
 }
@@ -211,7 +211,7 @@ int main()
         else if (queenPositions < 1 || queenPositions > boardSize)
         {
             cout << "Error not valid input please try again" << endl;
-            i = i - 1;
+            i -= 1;
         }
         else
         {
@@ -236,6 +236,6 @@ int main()
     printBoard(queenRank, boardSize);
 
     free(queenRank);
-    findFirstSol(6);
+    findFirstSol(8);
     return 1;
 }
