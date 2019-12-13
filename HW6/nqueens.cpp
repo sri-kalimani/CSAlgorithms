@@ -217,15 +217,19 @@ int* nextLegalPosition(int *queenRank, int boardSize)
 
         for (int j=boardSize-1; j>=0; j--){
 
-            newRank[i] = j;
-            if (isLegalPosition(newRank, boardSize)){
-              queenRank[i] = newRank[i];
-              cout<<"Found a legal position for "<<i+1<<" "<<j+1<<endl;
-              continue;
-            }
-            else{
-                queenRank[i] = -1;
-                newRank[i] = -1;
+            if (queenRank[i] != j){
+
+              newRank[i] = j;
+              if (isLegalPosition(newRank, boardSize)){
+                queenRank[i] = newRank[i];
+                cout<<"Found a legal position for "<<i+1<<" "<<j+1<<endl;
+                break;
+              }
+              else{
+                  // queenRank[i] = -1;
+                  newRank[i] = -1;
+              }
+
             }
 
         }
