@@ -44,15 +44,14 @@ int* successor(int *queenRank, int boardSize)
 
 bool isLegalPosition(int *queenRank, int boardSize)
 {
+    fflush(stdout);
     int board[boardSize][boardSize]; // create the board
     for (int i = 0; i < boardSize; i++)
     {
         for (int j = 0; j < boardSize; j++)
         {
             board[i][j] = 0;
-            // cout<<board[i][j]<<" ";
         }
-        // cout<<endl;
     }
 
     for (int i = 0; i < boardSize; i++)
@@ -75,7 +74,13 @@ bool isLegalPosition(int *queenRank, int boardSize)
                 {
                     if (board[k][l] == 1)
                     {
-                        cout<<"diagonal taken"<<endl;
+                        return false;
+                    }
+                }
+                for (k = (i + 1), l = (j - 1); k < boardSize && l >= 0; k++, l--)
+                {
+                    if (board[k][l] == 1)
+                    {
                         return false;
                     }
                 }
@@ -83,7 +88,6 @@ bool isLegalPosition(int *queenRank, int boardSize)
                 {
                     if (board[k][j] == 1)
                     {
-                        cout<<"row taken"<<endl;
                         return false;
                     }
                 }
@@ -91,7 +95,6 @@ bool isLegalPosition(int *queenRank, int boardSize)
                 {
                     if (board[i][l] == 1)
                     {
-                        cout<<"column taken"<<endl;
                         return false;
                     }
                 }
@@ -113,7 +116,7 @@ int* nextLegalPosition(int *queenRank, int boardSize)
     queenRankCopy[i] = queenRank[i];
 
   }
-  cout<<"hello"<<endl;
+
   if (queenRank[boardSize-1] == -1 && isLegalPosition(queenRank, boardSize)){
 
   cout<<"partial legal "<<endl;
@@ -144,7 +147,7 @@ int* nextLegalPosition(int *queenRank, int boardSize)
 
     if (!isLegalPosition(queenRank, boardSize)){
 
-      cout<<"not legal "<<endl;
+      cout<<"given board illegal "<<endl;
       int* newPos = new int[boardSize];
 
       int* newPosCopy = new int[boardSize];
@@ -186,46 +189,50 @@ int* nextLegalPosition(int *queenRank, int boardSize)
 
         }
 
+        if (isLegalPosition(queenRank, boardSize))
+          return queenRank;
+
       }
 
     }
 
-    // else{
-    //
-    //   cout<<"filled all the way "<<endl;
-    //   int* newRank = new int[boardSize];
-    //
-    //   // int* newPosCopy = new int[boardSize];
-    //
-    //   // int new_pos = 0;
-    //
-    //   for (int i=0; i<boardSize; i++){
-    //
-    //     newRank[i] = queenRank[i];
-    //
-    //     // newPosCopy[i] = queenRank[i];
-    //
-    //   }
-    //
-    //   for (int i=boardSize-1; i>=0; i++){
-    //
-    //     for (int j=boardSize-1; j>=0; j++){
-    //
-    //         newRank[i] = j;
-    //         if (isLegalPosition(newRank, boardSize)){
-    //           queenRank[i] = newRank[i];
-    //           continue;
-    //         }
-    //         else{
-    //             queenRank[i] = -1;
-    //             newRank[i] = -1;
-    //         }
-    //
-    //     }
-    //
-    //   }
-    //
-    // }
+    if (isLegalPosition(queenRank, boardSize) && queenRank[boardSize-1] != -1){
+
+      cout<<"filled all the way "<<endl;
+      int* newRank = new int[boardSize];
+
+      // int* newPosCopy = new int[boardSize];
+
+      // int new_pos = 0;
+
+      for (int i=0; i<boardSize; i++){
+
+        newRank[i] = queenRank[i];
+
+        // newPosCopy[i] = queenRank[i];
+
+      }
+
+      for (int i=boardSize-1; i>=0; i--){
+
+        for (int j=boardSize-1; j>=0; j--){
+
+            newRank[i] = j;
+            if (isLegalPosition(newRank, boardSize)){
+              queenRank[i] = newRank[i];
+              cout<<"Found a legal position for "<<i+1<<" "<<j+1<<endl;
+              continue;
+            }
+            else{
+                queenRank[i] = -1;
+                newRank[i] = -1;
+            }
+
+        }
+
+      }
+
+    }
 
 
 
