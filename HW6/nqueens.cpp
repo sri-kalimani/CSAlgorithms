@@ -20,7 +20,7 @@ void printBoard(int *queenRank, int boardSize)
     }
 }
 
-void successor(int *queenRank, int boardSize)
+int* successor(int *queenRank, int boardSize)
 {
     for (int i = 0; i < boardSize; i++)
     {
@@ -37,7 +37,10 @@ void successor(int *queenRank, int boardSize)
             break;
         }
     }
+
+    return queenRank;
 }
+
 
 bool isLegalPosition(int *queenRank, int boardSize)
 {
@@ -96,12 +99,139 @@ bool isLegalPosition(int *queenRank, int boardSize)
         }
     }
 
-    cout<<"positions are fine"<<endl;
     return true;
 }
 
-void nextLegalPosition(int *queenRank, int boardSize)
+int* nextLegalPosition(int *queenRank, int boardSize)
 {
+
+
+  int* queenRankCopy = new int[boardSize];
+
+  for (int i=0; i<boardSize; i++){
+
+    queenRankCopy[i] = queenRank[i];
+
+  }
+  cout<<"hello"<<endl;
+  if (queenRank[boardSize-1] == -1 && isLegalPosition(queenRank, boardSize)){
+
+  cout<<"partial legal "<<endl;
+
+  for (int i=0; i<boardSize; i++){
+
+      if (queenRank[i] == -1){
+
+          for (int j=0; j<boardSize; j++){
+
+              queenRankCopy[i] = j;
+
+              if (isLegalPosition(queenRankCopy, boardSize)){
+
+                queenRank[i] = j;
+
+                return queenRank;
+              }
+
+              // else{
+                  queenRankCopy[i] = -1;
+          //}
+          }
+      }
+
+    }
+  }
+
+    if (!isLegalPosition(queenRank, boardSize)){
+
+      cout<<"not legal "<<endl;
+      int* newPos = new int[boardSize];
+
+      int* newPosCopy = new int[boardSize];
+
+      for (int i=0; i<boardSize; i++){
+
+        newPos[i] = -1;
+
+        newPosCopy[i] = -1;
+
+      }
+
+
+      for (int i=0; i<boardSize; i++){
+
+        newPos[i] = queenRank[i];
+
+        newPosCopy[i] = queenRank[i];
+
+        if (isLegalPosition(newPos, boardSize)){
+
+          continue;
+
+        }
+
+        for (int j=0; j<boardSize; j++){
+
+          newPosCopy[i] = j;
+
+          if (isLegalPosition(newPosCopy, boardSize)){
+
+            newPos[i] = newPosCopy[i];
+
+            queenRank[i] = newPos[i];
+
+          }
+
+          newPosCopy[i] = queenRank[i];
+
+        }
+
+      }
+
+    }
+
+    // else{
+    //
+    //   cout<<"filled all the way "<<endl;
+    //   int* newRank = new int[boardSize];
+    //
+    //   // int* newPosCopy = new int[boardSize];
+    //
+    //   // int new_pos = 0;
+    //
+    //   for (int i=0; i<boardSize; i++){
+    //
+    //     newRank[i] = queenRank[i];
+    //
+    //     // newPosCopy[i] = queenRank[i];
+    //
+    //   }
+    //
+    //   for (int i=boardSize-1; i>=0; i++){
+    //
+    //     for (int j=boardSize-1; j>=0; j++){
+    //
+    //         newRank[i] = j;
+    //         if (isLegalPosition(newRank, boardSize)){
+    //           queenRank[i] = newRank[i];
+    //           continue;
+    //         }
+    //         else{
+    //             queenRank[i] = -1;
+    //             newRank[i] = -1;
+    //         }
+    //
+    //     }
+    //
+    //   }
+    //
+    // }
+
+
+
+
+  return queenRank;
+
 }
 
 int main()
@@ -133,11 +263,22 @@ int main()
             queenRank[i]= -1;
         }
     }
-    // for(int i =0;i < boardSize;i++){
-    //     cout << queenRank[i] << endl;
-    // }
+
     bool status = isLegalPosition(queenRank, boardSize);
-    cout<<status;
+    cout<<"board legal status "<<status<<endl;
+
+    for (int i=0; i<boardSize; i++){
+      cout<<queenRank[i]<<" ";
+    }
+
+    cout<<endl;
+
+    int* nextQueenPos = nextLegalPosition(queenRank, boardSize);
+    cout<<"Next legal position"<<endl;
+    for (int i=0; i<boardSize; i++){
+      cout<<nextQueenPos[i]+1<<" ";
+    }
+
 
         return 1;
 }
